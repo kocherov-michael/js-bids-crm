@@ -5,62 +5,63 @@ const trElementTemplate = `
 	</td>
 	<td>%CLIENT_NAME%</td>
 	<td>
-		<span class="badge badge-light badge-lg">%GOOD%</span>
+		<span class="badge badge-light badge-lg">
+			<span class="icon">🛴</span> %GOOD%
+		</span>
 	</td>
 	<td>%PRICE%</td>
-	<td><span class="badge badge-primary">Новая</span></td>
+	<td>%REQUEST_STATUS%</td>
 	<td><span class="badge badge-secondary">Нет оплаты</span></td>
 </tr>`
 
 main()
 
 function main () {
-	const url = 'http://89.108.64.67:3000'
-	const key = '?key=lsadkfjqg9384wfh9a8wehr'
-	const address = '/orders'
+	dbRequest.getList(data => {
+		const rootDir = document.getElementById('listViewer')
 
-	fetch(url + address + key, {
-		method: 'GET'
+		for (const item of data) {
+			const tbodyElement = document.createElement('tbody')
+			const requestStatusSpanElement = getElementByRequestStatusNumber(item.requestStatus)
+
+			tbodyElement.innerHTML = trElementTemplate
+				.replace('%ID%', item.id)
+				.replace('%ID%', item.id)
+				.replace('%GOOD%', item.good)
+				.replace('%PRICE%', getPriceNormalize(item.price))
+				.replace('%CLIENT_NAME%', item.clientName)
+				.replace('%REQUEST_STATUS%', requestStatusSpanElement.outerHTML || '')
+
+			rootDir.append(tbodyElement.firstElementChild)
+		}
+
+		console.log(data)
 	})
-		.then(answer => answer.json())
-		.then(data => {
-			const rootDir = document.getElementById('listViewer')
+}
 
-			for (const item of data) {
-				const tbodyElement = document.createElement('tbody')
-				const price = item.price.toString().substr(0, item.price.toString().length - 2) + '.' + item.price.toString().substr(-2) + ' руб.'
-				console.log(item.good)
-				let goodName
-				switch(item.good) {
-					case '1':  goodName = 'Автомобиль'
-						break
-					case '2':  goodName = 'Автобус'
-						break
-					case '3':  goodName = 'Трактор'
-						break
-					case '4':  goodName = 'Самолет'
-						break
-					case '5':  goodName = 'Парусник'
-						break
-					case '6':  goodName = 'Поезд'
-						break
-					case '7':  goodName = 'Самокат'
-						break
-					default:  goodName = item.good
-						break
-				}				
-				console.log(goodName)
-				tbodyElement.innerHTML = trElementTemplate
-					.replace('%ID%', item.id)
-					.replace('%ID%', item.id)
-					.replace('%GOOD%', goodName)
-					.replace('%PRICE%', price)
-					.replace('%CLIENT_NAME%', item.clientName)
-				rootDir.append(tbodyElement.firstElementChild)
-			}
+function getPriceNormalize (price) {
+	const fractional = (price % 100).toString().padStart(2, '0')
+	const integer = parseInt(price / 100)
 
-			// console.log(data)
-		})
+	return `${integer}.${fractional} руб.`
+}
+
+function getElementByRequestStatusNumber (number) {
+	if (number === 3) {
+		const spanElement = document.createElement('span')
+
+		spanElement.className = "badge badge-warning"
+		spanElement.textContent = 'Ожидается оплата'
+
+		return spanElement
+	}
+
+	const spanElement = document.createElement('span')
+
+	spanElement.className = "badge"
+	spanElement.textContent = 'ERROR'
+
+	return spanElement
 }
 
 // Получить все заказы

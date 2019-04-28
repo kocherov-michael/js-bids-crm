@@ -1,58 +1,29 @@
-const buttonCreate = document.querySelector('#buttonCreate')
-buttonCreate.addEventListener('click', () => {
-	const url = 'http://89.108.64.67:3000'
-	const key = '?key=lsadkfjqg9384wfh9a8wehr'
-	const address = '/order'
+;(function () {
+	'use strict'
 
-	const clientNameElement = document.querySelector('[data-clientName]')
-	console.log(clientNameElement.value)
-	const priceElement = document.querySelector('[data-price]')
-	// const priceArray = priceString.split('.')
-	// const price = parseInt(priceArray[0].concat(priceArray[1]))
-	console.log(priceElement.value)
-	const goodElement = document.querySelector('[data-good]')
-	const goodIndex = goodElement.options.selectedIndex
-	const goodText = goodElement.options[goodIndex].text;
-	console.log(goodText)
+	const buttonCreateOrder = document.querySelector('[data-create-order]')
 
-	const newOrder = JSON.stringify({
-		good: goodText,
-		price: parseInt(priceElement.value),
-		clientName: clientNameElement.value,
-		paymentStatus: '0',
-		requestStatus: '0'
-	})
+	buttonCreateOrder.addEventListener('click', buttonCreateOrderClickHandler)
 
-	fetch(url + address + key, {
-		method: 'POST',
-		body: newOrder
-	}).then( () => {
-		location.href = 'index.html'
-		// console.log('обновилось')
-		// const rootDir = document.querySelector('[data-header]')
-		// const notify = document.createElement('div')
-		// notify.textContent = "Заказ создан"
-		// notify.classList.add("notify-save")
-		// rootDir.insertBefore(notify, rootDir.firstChild)
-	})
-	
-})
+	function buttonCreateOrderClickHandler (event) {
+		event.stopPropagation()
 
+		const orderData = getOrderData()
 
-// Получить все заказы
-// GET /orders
+		dbRequest.createOrder(orderData, () => {
+			location.replace('index.html')
+		})
+	}
 
-// Получить заказ по ID
-// GET /order/:id
+	function getOrderData () {
+		const orderData = {
+			clientName: document.querySelector('[data-new-order-client-name]').value || 'NotName',
+			good: document.querySelector('[data-new-order-good]').value || 'NotGood',
+			price: parseInt(document.querySelector('[data-new-order-price]').value) * 100 || 1,
+			requestStatus: parseInt(document.querySelector('[data-new-order-request-status]').value) || 0,
+			paymentStatus: parseInt(document.querySelector('[data-new-order-payment-status]').value) || 0
+		}
 
-// Создать новый заказ
-// POST /order body
-
-// Изменить заказ
-// PUT /order/:id body
-
-// Удалить заказ
-// DELETE /order/:id
-
-// Сброс базы данных
-// POST /reinit
+		return orderData
+	}
+})()

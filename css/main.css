@@ -48,10 +48,3 @@ body {
 	font-size: 22px;
 	margin-bottom: 4px;
 }
-.notify-save {
-	padding: 20px;
-    background-color: #0080001a;
-    margin: 10px 0;
-    border: 1px solid green;
-    border-radius: 4px;
-}
