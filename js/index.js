@@ -29,27 +29,27 @@ function main () {
 			for (const item of data) {
 				const tbodyElement = document.createElement('tbody')
 				const price = item.price.toString().substr(0, item.price.toString().length - 2) + '.' + item.price.toString().substr(-2) + ' руб.'
-
+				console.log(item.good)
 				let goodName
 				switch(item.good) {
-					case 1:  goodName = 'Автомобиль'
+					case '1':  goodName = 'Автомобиль'
 						break
-					case 2:  goodName = 'Автобус'
+					case '2':  goodName = 'Автобус'
 						break
-					case 3:  goodName = 'Трактор'
+					case '3':  goodName = 'Трактор'
 						break
-					case 4:  goodName = 'Самолет'
+					case '4':  goodName = 'Самолет'
 						break
-					case 5:  goodName = 'Парусник'
+					case '5':  goodName = 'Парусник'
 						break
-					case 6:  goodName = 'Поезд'
+					case '6':  goodName = 'Поезд'
 						break
-					case 7:  goodName = 'Самокат'
+					case '7':  goodName = 'Самокат'
 						break
-					default:  goodName = 'товар не выбран'
+					default:  goodName = item.good
 						break
 				}				
-
+				console.log(goodName)
 				tbodyElement.innerHTML = trElementTemplate
 					.replace('%ID%', item.id)
 					.replace('%ID%', item.id)

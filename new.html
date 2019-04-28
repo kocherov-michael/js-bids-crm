@@ -34,28 +34,28 @@
 				<form action="">
 					<!-- card -->
 					<div class="card mb-4">
-						<div class="card-header">Данные о заявке</div>
+						<div class="card-header" data-header>Данные о заявке</div>
 						<div class="card-body">
 
 							<div class="row mb-3">
 								<div class="col-md-2"><strong>Имя:</strong></div>
 								<div class="col">
-									<input id="clientName" type="text" class="form-control" value="">
+									<input id="clientName" type="text" class="form-control" data-clientName value="">
 								</div>
 							</div>
 
 							<div class="row mb-3">
 								<div class="col-md-2"><strong>Продукт:</strong></div>
 								<div class="col">
-									<select class="custom-select" id="good">
+									<select class="custom-select" id="good" data-good>
 										<option selected="">Выберите...</option>
-										<option value="1">🚗 Автомобиль</option>
-										<option value="2">🚌 Автобус</option>
-										<option value="3">🚜 Трактор</option>
-										<option value="4">✈ Самолет</option>
-										<option value="5">⛵ Парусник</option>
-										<option value="6">🚅 Поезд</option>
-										<option value="7">🛴 Самокат</option>
+										<option value="1">Автомобиль</option>
+										<option value="2">Автобус</option>
+										<option value="3">Трактор</option>
+										<option value="4">Самолет</option>
+										<option value="5">Парусник</option>
+										<option value="6">Поезд</option>
+										<option value="7">Самокат</option>
 									</select>
 								</div>
 							</div>
@@ -64,9 +64,9 @@
 								<div class="col-md-2"><strong>Стоимость:</strong></div>
 								<div class="col">
 									<div class="input-group">
-										<input id="price" type="text" class="form-control" value="">
+										<input id="price" type="text" class="form-control" data-price value="">
 										<div class="input-group-append">
-											<span class="input-group-text">рублей</span>
+											<span class="input-group-text">копеек</span>
 										</div>
 									</div>
 								</div>

@@ -4,29 +4,36 @@ buttonCreate.addEventListener('click', () => {
 	const key = '?key=lsadkfjqg9384wfh9a8wehr'
 	const address = '/order'
 
-	const clientName = document.querySelector('#clientName').value
-	console.log(clientName)
-	const priceString = document.querySelector('#price').value
-	const priceArray = priceString.split('.')
-	const price = parseInt(priceArray[0].concat(priceArray[1]))
-	console.log(price)
-	const goodElement = document.querySelector('#good')
-	console.log(goodElement.value)
-	const good = goodElement.value
-	console.log(good)
+	const clientNameElement = document.querySelector('[data-clientName]')
+	console.log(clientNameElement.value)
+	const priceElement = document.querySelector('[data-price]')
+	// const priceArray = priceString.split('.')
+	// const price = parseInt(priceArray[0].concat(priceArray[1]))
+	console.log(priceElement.value)
+	const goodElement = document.querySelector('[data-good]')
+	const goodIndex = goodElement.options.selectedIndex
+	const goodText = goodElement.options[goodIndex].text;
+	console.log(goodText)
 
 	const newOrder = JSON.stringify({
-		good: good,
-		price: price,
-		clientName: clientName,
-		managerName: "Анастасия",
-		paymentStatus: 0,
-		requestStatus: 0
+		good: goodText,
+		price: parseInt(priceElement.value),
+		clientName: clientNameElement.value,
+		paymentStatus: '0',
+		requestStatus: '0'
 	})
 
 	fetch(url + address + key, {
 		method: 'POST',
 		body: newOrder
+	}).then( () => {
+		location.href = 'index.html'
+		// console.log('обновилось')
+		// const rootDir = document.querySelector('[data-header]')
+		// const notify = document.createElement('div')
+		// notify.textContent = "Заказ создан"
+		// notify.classList.add("notify-save")
+		// rootDir.insertBefore(notify, rootDir.firstChild)
 	})
 	
 })
