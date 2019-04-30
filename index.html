@@ -35,8 +35,8 @@
 						<div class="input-group-prepend">
 							<label class="input-group-text" for="inputGroupSelect01">Статус заявки</label>
 						</div>
-						<select class="custom-select" id="inputGroupSelect01">
-							<option selected>Выберите...</option>
+						<select class="custom-select" id="inputGroupSelect01" data-filter-request-status>
+							<option value="0" selected>Выберите...</option>
 							<option value="1">Новая</option>
 							<option value="2">В работе</option>
 							<option value="3">Ожидается оплата</option>
@@ -48,9 +48,9 @@
 				<div class="col">
 					<div class="input-group mb-3">
 						<div class="input-group-prepend">
-							<label class="input-group-text" for="inputGroupSelect01">Статус оплаты</label>
+							<label class="input-group-text" for="inputGroupSelect02">Статус оплаты</label>
 						</div>
-						<select class="custom-select" id="inputGroupSelect01">
+						<select class="custom-select" id="inputGroupSelect02" data-filter-payment-status>
 							<option selected>Выберите...</option>
 							<option value="1">Не оплачено</option>
 							<option value="3">Частичная оплата</option>
@@ -59,12 +59,12 @@
 						</select>
 					</div>
 				</div>
-				<div class="col">
+				<!-- <div class="col">
 					<div class="input-group mb-3">
 						<div class="input-group-prepend">
-							<label class="input-group-text" for="inputGroupSelect01">Продукт</label>
+							<label class="input-group-text" for="inputGroupSelect03">Продукт</label>
 						</div>
-						<select class="custom-select" id="inputGroupSelect01">
+						<select class="custom-select" id="inputGroupSelect03">
 							<option selected>Выберите...</option>
 							<option value="1">Не оплачено</option>
 							<option value="2">Ожидается оплата</option>
@@ -73,7 +73,7 @@
 							<option value="5">Возврат</option>
 						</select>
 					</div>
-				</div>
+				</div> -->
 			</div>
 		</form>
 		<!-- // Фильтр -->

@@ -52,7 +52,7 @@
 							<div class="row mb-3">
 								<div class="col-md-2"><strong>Продукт:</strong></div>
 								<div class="col">
-									<input type="text" class="form-control" value="" data-new-order-good>
+									<input type="text" class="form-control" value="" data-order-good>
 									<!-- <span class="badge badge-light badge-lg">
 										<span class="icon">🛴</span> Самокат
 									</span> -->
@@ -63,7 +63,7 @@
 								<div class="col-md-2"><strong>Стоимость:</strong></div>
 								<div class="col">
 									<div class="input-group">
-									  <input type="text" class="form-control" value="8000" data-new-order-price>
+									  <input type="text" class="form-control" value="" data-new-order-price>
 									  <div class="input-group-append">
 									    <span class="input-group-text">копеек</span>
 									  </div>
@@ -76,7 +76,7 @@
 									<strong>Статус заявки:</strong> 
 								</div>
 								<div class="col">
-									<select class="custom-select" id="inputGroupSelect01">
+									<select class="custom-select" id="inputGroupSelect02" data-order-requestStatus>
 										<option selected="">Выберите...</option>
 										<option value="1">Новая</option>
 										<option value="2">В работе</option>
@@ -91,12 +91,12 @@
 									<strong>Статус оплаты:</strong> 
 								</div>
 								<div class="col">
-									<select class="custom-select" id="inputGroupSelect01">
+									<select class="custom-select" id="inputGroupSelect03" data-order-paymentStatus>
 										<option selected="">Выберите...</option>
 										<option value="1">Не оплачено</option>
-										<option value="3">Частичная оплата</option>
-										<option value="4">Полная оплата</option>
-										<option value="5">Возврат</option>
+										<option value="2">Частичная оплата</option>
+										<option value="3">Полная оплата</option>
+										<option value="4">Возврат</option>
 									</select>
 								</div>
 							</div>
@@ -110,6 +110,7 @@
 					</div>
 					<!-- //card -->
 					<button type="button" class="btn btn-primary" data-order-save>Сохранить изменения</button>
+					<button type="button" class="btn btn-danger" data-order-delete>Удалить заявку</button>
 				</form>
 			</div>
 			<!-- //col -->
