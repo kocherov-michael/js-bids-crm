@@ -66,6 +66,17 @@
 			fetch(path, params)
 				.then(answer => answer.json())
 				.then(() => callback())
+		},
+
+		generateOrder(number, callback){
+			const path = url + '/generate/' + number + key
+			const params = {
+				method: 'POST'
+			}
+		
+			fetch(path, params)
+				.then(answer => answer.json())
+				.then(data => callback(data))
 		}
 	}
 
@@ -89,3 +100,6 @@
 
 // Сброс базы данных
 // POST /reinit
+
+// Генерация
+// POST /generate/:number

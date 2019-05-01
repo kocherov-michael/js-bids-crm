@@ -23,7 +23,10 @@
 		<!-- Шапка -->
 		<div class="heading">
 			<div class="title-1 inline">Все заявки </div>
-			<a href="new.html" class="btn btn-primary btn-sm">Создать заявку</a>
+			<div>
+				<button class="btn btn-primary btn-sm" data-generate>Сгенерировать 5 заявок</button>
+				<a href="new.html" class="btn btn-primary btn-sm">Создать заявку</a>
+			</div>
 		</div>
 		<!-- // Шапка -->
 
@@ -51,29 +54,23 @@
 							<label class="input-group-text" for="inputGroupSelect02">Статус оплаты</label>
 						</div>
 						<select class="custom-select" id="inputGroupSelect02" data-filter-payment-status>
-							<option selected>Выберите...</option>
-							<option value="1">Не оплачено</option>
-							<option value="3">Частичная оплата</option>
-							<option value="4">Полная оплата</option>
-							<option value="5">Возврат</option>
+							<option value="0" selected>Выберите...</option>
+							<option value="1">Нет оплаты</option>
+							<option value="2">Частично</option>
+							<option value="3">Оплачено</option>
+							<option value="4">Возврат</option>
 						</select>
 					</div>
 				</div>
-				<!-- <div class="col">
+				<div class="col">
 					<div class="input-group mb-3">
 						<div class="input-group-prepend">
 							<label class="input-group-text" for="inputGroupSelect03">Продукт</label>
 						</div>
-						<select class="custom-select" id="inputGroupSelect03">
-							<option selected>Выберите...</option>
-							<option value="1">Не оплачено</option>
-							<option value="2">Ожидается оплата</option>
-							<option value="3">Частичная оплата</option>
-							<option value="4">Полная оплата</option>
-							<option value="5">Возврат</option>
+						<select class="custom-select" id="inputGroupSelect03" data-filter-good>
 						</select>
 					</div>
-				</div> -->
+				</div>
 			</div>
 		</form>
 		<!-- // Фильтр -->
@@ -90,20 +87,6 @@
 		    </tr>
 		  </thead>
 			<tbody id='listViewer'>
-				<tr class="bid-row">
-					<td scope="row">
-						<a href="view-and-edit.html">Заявка №1</a>
-					</td>
-					<td>Юрий Васильев</td>
-					<td>
-						<span class="badge badge-light badge-lg">
-							<span class="icon">🛴</span> Самокат
-						</span>
-					</td>
-					<td>8000.00 руб.</td>
-					<td><span class="badge badge-primary">Новая</span></td>
-				  <td><span class="badge badge-secondary">Нет оплаты</span></td>
-				</tr>
 			</tbody>
 		</table>
 	</div>
