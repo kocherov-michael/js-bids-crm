@@ -1,6 +1,10 @@
 ;(function () {
+	'use strict'
+
+	// Получение id заказа
 	const orderId = new URLSearchParams(window.location.search).get('id')
 
+	// Инициализация данных форм после запроса с сервера
 	dbRequest.getOrderById (orderId, data => {
 			document.querySelector('[data-order-id]').textContent = data.id
 			document.querySelector('[data-order-good]').value = data.good
@@ -21,26 +25,43 @@
 		})
 
 	function main () {
+		// Иноициализация кнопки сохранения изменений
 		document
 			.querySelector('[data-order-save]')
-			.addEventListener('click', buttonSaveClickHandler)
+			.addEventListener('click', event => {
+				event.stopPropagation()
+
+				dbRequest.editOrderById(
+					orderId, 
+					getOrderData(), 
+					() => location.replace('index.html'))
+			})
+
+		// Инициализация кнопки удаления заказа
 		document
 			.querySelector('[data-order-delete]')
-			.addEventListener('click', buttonDeleteClickHandler)
+			.addEventListener('click', event => {
+				event.stopPropagation()
+
+				dbRequest.deleteOrderById (
+					orderId,
+					() => location.replace('index.html'))
+			})
 	}
 
-	function buttonDeleteClickHandler (event) {
-		event.stopPropagation()
+	// function buttonDeleteClickHandler (event) {
+	// 	event.stopPropagation()
 
-		dbRequest.deleteOrderById (orderId, () => location.replace('index.html'))
-	}
+	// 	dbRequest.deleteOrderById (orderId, () => location.replace('index.html'))
+	// }
 
-	function buttonSaveClickHandler (event) {
-		event.stopPropagation()
-		const orderData = getOrderData()
-		dbRequest.editOrderById(orderId, orderData, () => location.replace('index.html'))
-	}
+	// function buttonSaveClickHandler (event) {
+	// 	event.stopPropagation()
+	// 	const orderData = getOrderData()
+	// 	dbRequest.editOrderById(orderId, orderData, () => location.replace('index.html'))
+	// }
 
+	// Формирование объекта отредактированного товара
 	function getOrderData () {
 		const orderData = {
 			requestStatus: parseInt(document.querySelector('[data-order-requestStatus]').value) || 0,

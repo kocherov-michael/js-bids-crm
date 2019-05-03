@@ -1,86 +1,26 @@
 ;(function () {
+	'use strict'
+
 	const url = 'http://89.108.64.67:3000'
 	const key = '?key=lsadkfjqg9384wfh9a8wehr'
-	const address = '/orders'
 
 	const dbRequest = {
-		getList (callback) {
-			const path = url + '/orders' + key
-			const params = { method: 'GET' }
-
-			fetch(path, params)
-				.then(answer => answer.json())
-				.then(data => callback(data))
-		},
-
-		getOrderById (id, callback) {
-			const path = url + '/order/' + id + key
-			const params = { method: 'GET' }
-
-			fetch(path, params)
-				.then(answer => answer.json())
-				.then(data => callback(data))
-		},
-
-		editOrderById (id, orderData, callback) {
-			const path = url + '/order/' + id + key
-			const params = {
-			method: 'PUT',
-			body: JSON.stringify(orderData)
-		}
-			
-			fetch(path, params)
-				.then(answer => answer.json())
-				.then(data => callback(data))
-		},
-
-		createOrder (orderData, callback) {
-			const path = url + '/order' + key
-			const params = {
-				method: 'POST',
-				body: JSON.stringify(orderData)
-			}
-
-			fetch(path, params)
-				.then(answer => answer.json())
-				.then(data => callback(data))
-		},
-
-		deleteOrderById (id, callback) {
-			const path = url + '/order/' + id + key
-			const params = {
-				method: 'DELETE'
-			}
-		
-			fetch(path, params)
-				.then(answer => answer.json())
-				.then(() => callback())
-		},
-
-		reinit (callback) {
-			const path = url + '/reinit' + key
-			const params = {
-				method: 'POST'
-			}
-		
-			fetch(path, params)
-				.then(answer => answer.json())
-				.then(() => callback())
-		},
-
-		generateOrder(number, callback){
-			const path = url + '/generate/' + number + key
-			const params = {
-				method: 'POST'
-			}
-		
-			fetch(path, params)
-				.then(answer => answer.json())
-				.then(data => callback(data))
-		}
+		editOrderById: (id, data, callback) => localFetch(`/order/${id}`, {method: 'PUT', body: JSON.stringify(data)}, callback),
+		createOrder: (data, callback) => localFetch(`/order`, {method: 'POST', body: JSON.stringify(data)}, callback),
+		generateOrder: (number, callback) => localFetch(`/generate/${number}`, { method: 'POST' }, callback),
+		deleteOrderById: (id, callback) => localFetch(`/order/${id}`, { method: 'DELETE' }, callback),
+		getOrderById: (id, callback) => localFetch(`/order/${id}`, { method: 'GET' }, callback),
+		reinit: callback => localFetch(`/reinit`, { method: 'POST' }, callback),
+		getList: callback => localFetch(`/orders`, { method: 'GET' }, callback)
 	}
 
 	window.dbRequest = dbRequest
+	
+	function localFetch (path, params, callback) {
+		fetch(`${url}${path}${key}`, params)
+			.then(answer => answer.json())
+			.then(data => callback(data))
+	}
 })()
 
 // Получить все заказы
