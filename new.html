@@ -34,29 +34,20 @@
 				<form action="">
 					<!-- card -->
 					<div class="card mb-4">
-						<div class="card-header" data-header>Данные о заявке</div>
+						<div class="card-header">Данные о заявке</div>
 						<div class="card-body">
 
 							<div class="row mb-3">
 								<div class="col-md-2"><strong>Имя:</strong></div>
 								<div class="col">
-									<input id="clientName" type="text" class="form-control" data-clientName value="">
+									<input type="text" class="form-control" value="" data-new-order-client-name>
 								</div>
 							</div>
 
 							<div class="row mb-3">
 								<div class="col-md-2"><strong>Продукт:</strong></div>
 								<div class="col">
-									<select class="custom-select" id="good" data-good>
-										<option selected="">Выберите...</option>
-										<option value="1">Автомобиль</option>
-										<option value="2">Автобус</option>
-										<option value="3">Трактор</option>
-										<option value="4">Самолет</option>
-										<option value="5">Парусник</option>
-										<option value="6">Поезд</option>
-										<option value="7">Самокат</option>
-									</select>
+									<input type="text" class="form-control" value="" data-new-order-good>
 								</div>
 							</div>
 
@@ -64,9 +55,9 @@
 								<div class="col-md-2"><strong>Стоимость:</strong></div>
 								<div class="col">
 									<div class="input-group">
-										<input id="price" type="text" class="form-control" data-price value="">
+										<input type="text" class="form-control" value="" data-new-order-price>
 										<div class="input-group-append">
-											<span class="input-group-text">копеек</span>
+											<span class="input-group-text">рублей</span>
 										</div>
 									</div>
 								</div>
@@ -77,8 +68,8 @@
 									<strong>Статус заявки:</strong>
 								</div>
 								<div class="col">
-									<select class="custom-select" id="paymentStatus">
-										<option selected="">Выберите...</option>
+									<select class="custom-select" id="inputGroupSelect02" data-new-order-request-status>
+										<option selected="0">Выберите...</option>
 										<option value="1">Новая</option>
 										<option value="2">В работе</option>
 										<option value="3">Ожидается оплата</option>
@@ -92,12 +83,12 @@
 									<strong>Статус оплаты:</strong>
 								</div>
 								<div class="col">
-									<select class="custom-select" id="requestStatus">
-										<option selected="">Выберите...</option>
-										<option value="1">Не оплачено</option>
-										<option value="3">Частичная оплата</option>
-										<option value="4">Полная оплата</option>
-										<option value="5">Возврат</option>
+									<select class="custom-select" id="inputGroupSelect03" data-new-order-payment-status>
+										<option selected="0">Выберите...</option>
+										<option value="1">Нет оплаты</option>
+										<option value="2">Частично</option>
+										<option value="3">Оплачено</option>
+										<option value="4">Возврат</option>
 									</select>
 								</div>
 							</div>
@@ -105,7 +96,7 @@
 						</div>
 					</div>
 					<!-- //card -->
-					<button id="buttonCreate" type="button" class="btn btn-primary">Создать заказ</button>
+					<button type="button" class="btn btn-primary" data-create-order>Создать заказ</button>
 				</form>
 			</div>
 			<!-- //col -->
@@ -125,7 +116,7 @@
 	<script src="libs/popper/popper.min.js"></script>
 	<script src="libs/bootstrap/js/bootstrap.min.js"></script>
 	<!-- User JS -->
-	<!-- <script src="js/main.js"></script> -->
+	<script src="js/request.js"></script>
 	<script src="js/new.js"></script>
 </body>
 

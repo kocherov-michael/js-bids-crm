@@ -1,82 +1,191 @@
-const trElementTemplate = `
-<tr class="bid-row">
-	<td scope="row">
-		<a href="view-and-edit.html?id=%ID%">Заявка №%ID%</a>
-	</td>
-	<td>%CLIENT_NAME%</td>
-	<td>
-		<span class="badge badge-light badge-lg">%GOOD%</span>
-	</td>
-	<td>%PRICE%</td>
-	<td><span class="badge badge-primary">Новая</span></td>
-	<td><span class="badge badge-secondary">Нет оплаты</span></td>
-</tr>`
+;(function () {
+	'use strict'
 
-main()
+	const trElementTemplate = `
+	<tr class="bid-row" data-order-row>
+		<td scope="row">
+			<a href="view-and-edit.html?id=%ID%">Заявка №%ID%</a>
+		</td>
+		<td>%CLIENT_NAME%</td>
+		<td>
+			<span class="badge badge-light badge-lg">%GOOD%</span>
+		</td>
+		<td>%PRICE%</td>
+		<td>%REQUEST_STATUS%</td>
+		<td>%PAYMENT_STATUS%</td>
+	</tr>`
 
-function main () {
-	const url = 'http://89.108.64.67:3000'
-	const key = '?key=lsadkfjqg9384wfh9a8wehr'
-	const address = '/orders'
+	const filterRequestElement = document.querySelector('[data-filter-request-status]')
+	const filterPaymentElement = document.querySelector('[data-filter-payment-status]')
+	const filterGoodsElement = document.querySelector('[data-filter-good]')
+	const buttonGenerateElement = document.querySelector('[data-generate]')
 
-	fetch(url + address + key, {
-		method: 'GET'
+	filterRequestElement.addEventListener('change', event => {
+		event.stopPropagation()
+		main()
 	})
-		.then(answer => answer.json())
-		.then(data => {
+	filterPaymentElement.addEventListener('change', event => {
+		event.stopPropagation()
+		main()
+	})
+	filterGoodsElement.addEventListener('change', event => {
+		event.stopPropagation()
+		main()
+	})
+
+	// Генерация заказов
+	document
+		.querySelector('[data-generate]')
+		.addEventListener('click', function (event) {
+			event.stopPropagation()
+			dbRequest.generateOrder(5, data => {
+				main()
+				createFilterGoodsList()
+			})
+		})
+
+	main()
+	createFilterGoodsList()
+
+	//Вывод списка заказов согласно фильтру
+	function main() {
+		dbRequest.getList(data => {
+
+			//Очистка списка заказов
 			const rootDir = document.getElementById('listViewer')
+			rootDir.innerHTML = ''
+
+			//Выбор фильтра для заказов
+			const filterRequestIndex = filterRequestElement.options.selectedIndex
+			const filterPaymentIndex = filterPaymentElement.options.selectedIndex
+			const filterGoodIndex = filterGoodsElement.options.selectedIndex
 
 			for (const item of data) {
-				const tbodyElement = document.createElement('tbody')
-				const price = item.price.toString().substr(0, item.price.toString().length - 2) + '.' + item.price.toString().substr(-2) + ' руб.'
-				console.log(item.good)
-				let goodName
-				switch(item.good) {
-					case '1':  goodName = 'Автомобиль'
-						break
-					case '2':  goodName = 'Автобус'
-						break
-					case '3':  goodName = 'Трактор'
-						break
-					case '4':  goodName = 'Самолет'
-						break
-					case '5':  goodName = 'Парусник'
-						break
-					case '6':  goodName = 'Поезд'
-						break
-					case '7':  goodName = 'Самокат'
-						break
-					default:  goodName = item.good
-						break
-				}				
-				console.log(goodName)
-				tbodyElement.innerHTML = trElementTemplate
-					.replace('%ID%', item.id)
-					.replace('%ID%', item.id)
-					.replace('%GOOD%', goodName)
-					.replace('%PRICE%', price)
-					.replace('%CLIENT_NAME%', item.clientName)
-				rootDir.append(tbodyElement.firstElementChild)
+				const isRequestStatusCoincide = filterRequestIndex === 0 || item.requestStatus === filterRequestIndex
+				const isPaymentStatusCoincide = filterPaymentIndex === 0 || item.paymentStatus === filterPaymentIndex
+				const isGoodCoincide = filterGoodIndex === -1 || filterGoodIndex === 0 || item.good === filterGoodsElement.value
+				if (isRequestStatusCoincide && isPaymentStatusCoincide && isGoodCoincide) {
+
+					const tbodyElement = document.createElement('tbody')
+					const requestStatusSpanElement = getElementByRequestStatusNumber(item.requestStatus)
+					const paymentStatusSpanElement = getElementByPaymentStatusNumber(item.paymentStatus)
+
+					tbodyElement.innerHTML = trElementTemplate
+						.replace('%ID%', item.id)
+						.replace('%ID%', item.id)
+						.replace('%GOOD%', item.good)
+						.replace('%PRICE%', getPriceNormalize(item.price))
+						.replace('%CLIENT_NAME%', item.clientName)
+						.replace('%REQUEST_STATUS%', requestStatusSpanElement.outerHTML || '')
+						.replace('%PAYMENT_STATUS%', paymentStatusSpanElement.outerHTML || '')
+
+					rootDir.append(tbodyElement.firstElementChild)
+				}
 			}
-
-			// console.log(data)
 		})
-}
+	}	
 
-// Получить все заказы
-// GET /orders
+	// Создание списка фильтрации по товарам
+	function createFilterGoodsList(){
+		dbRequest.getList(data => {
+		
+			filterGoodsElement.innerHTML = ''
 
-// Получить заказ по ID
-// GET /order/:id
+			const goodsList = []
+			for (let i = 0; i < data.length; i++) {
+				goodsList.push(data[i].good)
+			}
+			// Создание списка с оригинальными названиями товаров
+			const goodsListOriginals = ['Выберите...', ...new Set(goodsList)]
 
-// Создать новый заказ
-// POST /order body
+			for (let i = 0; i < goodsListOriginals.length; i++) {
+				const optionElement = document.createElement('option')
+				optionElement.textContent = goodsListOriginals[i]
+				filterGoodsElement.append(optionElement)
+			}
+		})
+	}
 
-// Изменить заказ
-// PUT /order/:id body
+	// Нормализация цены для отображения на странице
+	function getPriceNormalize (price) {
+		const fractional = (price % 100).toString().padStart(2, '0')
+		const integer = parseInt(price / 100)
 
-// Удалить заказ
-// DELETE /order/:id
+		return `${integer} руб. ${fractional} коп.`
+	}
 
-// Сброс базы данных
-// POST /reinit
+	// Генерация спан элемента статуса заказа
+	function getElementByRequestStatusNumber (number) {
+		const spanElement = document.createElement('span')
+
+		if (number === 1) {
+			spanElement.className = "badge badge-primary"
+			spanElement.textContent = 'Новая'
+		}
+		else if (number === 2) {
+			spanElement.className = "badge badge-light"
+			spanElement.textContent = 'В работе'
+		}
+		else if (number === 3) {
+			spanElement.className = "badge badge-warning"
+			spanElement.textContent = 'Ожидается оплата'
+		}
+		else if (number === 4) {
+			spanElement.className = "badge badge-light"
+			spanElement.textContent = 'Завершена'
+		}
+		else if (number === 5) {
+			spanElement.className = "badge badge-secondary"
+			spanElement.textContent = 'Отказ'
+		}
+		else {
+			spanElement.className = "badge"
+			spanElement.textContent = 'ERROR'
+		}
+		return spanElement
+	}
+
+	// Генерация спан элемента статуса оплаты
+	function getElementByPaymentStatusNumber (number) {
+		const spanElement = document.createElement('span')
+		if (number === 1) {
+			spanElement.className = "badge badge-secondary"
+			spanElement.textContent = 'Нет оплаты'
+		}
+		else if (number === 2) {
+			spanElement.className = "badge badge-warning"
+			spanElement.textContent = 'Частично'
+		}
+		else if (number === 3) {
+			spanElement.className = "badge badge-success"
+			spanElement.textContent = 'Оплачено'
+		}
+		else if (number === 4) {
+			spanElement.className = "badge badge-dark"
+			spanElement.textContent = 'Возврат'
+		}
+		else {
+			spanElement.className = "badge"
+			spanElement.textContent = 'ERROR'
+		}
+		return spanElement
+	}
+})()
+
+	// Получить все заказы
+	// GET /orders
+
+	// Получить заказ по ID
+	// GET /order/:id
+
+	// Создать новый заказ
+	// POST /order body
+
+	// Изменить заказ
+	// PUT /order/:id body
+
+	// Удалить заказ
+	// DELETE /order/:id
+
+	// Сброс базы данных
+	// POST /reinit
